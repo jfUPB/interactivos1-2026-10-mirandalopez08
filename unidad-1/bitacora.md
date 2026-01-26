@@ -117,6 +117,7 @@ while True:
 ```
 
 #### Explica detalladamente cómo funciona el sistema físico interactivo que has creado.
+Antes de desarrollar el código es necesario preparar el del micro:bit 
 
 Para comenzar en el codigo *p5.js* se declaran las variables globales que serán utilizadas a lo largo del código, una de las más importantes será x pues será utilizado más adelanter para definir la posición del circulo, después se creará un canvas al que se le asignará ancho, alturta y un color de fondo y posteriormente se crea un botón para conectarse al *micro:bit*. Después crearemos un circulo que estará ubicado en la parte central del canvas y lo rellenareos con el color blanco.
 ```js
@@ -155,12 +156,12 @@ function draw() {
       fill("purple");
     }
 ```
-Después de esto es necesario establecer que la posición inicial del circulo será dada por x paras quer los contadores que usamos previamente funcionen correctamente
+Después de esto es necesario establecer que la posición inicial del circulo será dada por x para que los contadores que usamos previamente funcionen correctamente
 ```js
  background(220);
   ellipse(x, height / 2, 100, 100);
 ```
-Finalmente estableceremos la visualizacion de el botón *Connect to micro:bit* y *Disconnect* y también le darmeos sus funciones correspondientes, es importante saber que 115200 es la velocidad de transmision der datos y este numero es comunmente utilizado
+Finalmente estableceremos la visualizacion de el botón *Connect to micro:bit* y *Disconnect* y también le daremeos sus funciones correspondientes, es importante saber que 115200 es la velocidad de transmision de datos y este numero es comunmente utilizado
 ```js
  // mostrar el boton de conectar al microbit
   if (!port.opened()) {
@@ -184,6 +185,7 @@ function connectBtnClick() {
 ```
 
 ## Bitácora de reflexión
+
 
 
 
