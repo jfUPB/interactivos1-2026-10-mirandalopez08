@@ -198,7 +198,80 @@ while True:
 El resto del código fue usado en una actividad anterior pero en esta no va a tener participacion pues solo necesitamos que el circulo se mueva a la derecha e izquierda
 
 ## Bitácora de reflexión
+En el código del micro:bit se inicia importando la biblioteca con la info del microbit y se establece la linea para la comunicación con el mismo, posteriormente se establece un condicional, si el botón *A* está siendo presionado en este momento entonces se enviará la letra *A* para copnfirmar, de no ser así se enviará la letra *N* para que el programa sepa que no está ocurriendo nada en este momento 
+``` py
+from microbit import * 
 
+uart.init(baudrate=115200)  
+
+while True:
+
+    if button_a.is_pressed():
+        uart.write('A')
+    else:
+        uart.write('N')
+
+    sleep(100)
+```
+Después está el código *p5.j* que lo explicaré por partes, para empezar se inicializan las variables generales que serán utilizadas a lo largo del código, después se creará un canvas y se le asignará un color a el mismo, luego se creará un botón llamado *Connect to micro:bit* con el propósito de establecer la conexión con el mismo antes de comenzar, este botón funcionará cuando el mouse lo oprima
+ ``` js
+  let port;
+  let connectBtn;
+  let connectionInitialized = false;
+
+  function setup() {
+    createCanvas(400, 400);
+    background(220);
+    port = createSerial(); // inicializa la conexión con el micro:bit
+    connectBtn = createButton("Connect to micro:bit");
+    connectBtn.position(80, 300); // posicion del botón
+    connectBtn.mousePressed(connectBtnClick); // iniciar la acción de conectar después de que el mosuse presione el botón
+  }
+```
+Luego se crea un espacio para limpiar el liemzo constantemente, además realiza la limpieza del puerto
+```js
+  function draw() {
+    background(220); // exister para refrescar el fondo y que cada que haya un cambio no queden rastros del dibujo anterior
+
+    if (port.opened() && !connectionInitialized) {
+      port.clear();
+      connectionInitialized = true;
+    }
+```
+
+Para continuar comienza con la lectura de los datos enviados desde la micro:bit, si recibe una *A* va a pintar el cuadrado de rojo, si recibe una *N* que en este caso significa que nada está siendo presionado va a pintarlo de verde 
+```js
+    if (port.availableBytes() > 0) {
+      let dataRx = port.read(1);
+      if (dataRx == "A") {
+        fill("red");
+      } else if (dataRx == "N") {
+        fill("green");
+      }
+    }
+```
+Después va a dibujar un cuadrado que va a estar ubicado en el centro de el lienzo, este es el que va a ser pintado según la información que el código reciba. Además va a revisar la conexión con el micro:bit si no está conectado entonces va a mostrar *Connect to micro:bit* por otro lado si sí se encuentra conectado va a mostrar la opción *Disconnect* y finalmente si no hay conexión va a abrir el puerto para establecer la conexión con el, pero si ya se encuentra conectado entonces va a cerrar el puerto y desconectarlo del micro:bit, esta parte final del código está diseñada para el botón que se creó en el principio que permite conectar y desconectar. 
+```js
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 50, 50);
+
+    if (!port.opened()) {
+      connectBtn.html("Connect to micro:bit");
+    } else {
+      connectBtn.html("Disconnect");
+    }
+  }
+
+  function connectBtnClick() {
+    if (!port.opened()) {
+      port.open("MicroPython", 115200);
+      connectionInitialized = false;
+    } else {
+      port.close();
+    }
+  }
+```
+Es necesario establecer la opción de que el *micro:bit* no está enviando ningún tipo de información con el propósito de que el sistema no se confuna cuando no esté recibiendo ninguna información
 
 
 
