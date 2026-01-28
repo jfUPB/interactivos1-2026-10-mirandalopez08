@@ -184,7 +184,7 @@ function connectBtnClick() {
 ```
 Por otra parte está el código del micro:bit, para empezar, al igual que en el anterior es necesario establecer la conexion con el micro:bit, inmediabtermente después se proyectará una mariposa. Después comienzan los condicionales, si se opirime el botón *A* se enviará información a la pantalla, en este caso haciendo caso a las indicaciones del código anterior el círculo se moverá a la izquierda y si se oprime el botón B también se enviará información de moverlo a la derecha
 
-```
+``` py
 while True:
     if button_a.is_pressed():
         uart.write('A')
@@ -196,6 +196,7 @@ while True:
 El resto del código fue usado en una actividad anterior pero en esta no va a tener participacion pues solo necesitamos que el circulo se mueva a la derecha e izquierda
 
 ## Bitácora de reflexión
+
 
 
 
