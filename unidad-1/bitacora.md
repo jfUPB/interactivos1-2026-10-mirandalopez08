@@ -24,6 +24,8 @@ Como profesional seria posible crear expewriencias envolventes e innovadoras a p
 
 #### ¿Por qué no funcionaba el programa con was_pressed() y por qué funciona con is_pressed()? Explica detalladamente.
 
+El código no funcionaba con *was_pressed()* porque esa función solo devuelve verdadero una sola vez en el instante exacto en que ocurre el clic, por lo que se enviaba la información solo en ese momento y, si el programa receptor no la leía justo entonces, el dato se perdía. En cambio, con *is_pressed()* el estado del botón se envía de forma continua mientras esté presionado, lo que garantiza que el otro programa siempre reciba la información y pueda detectarla correctamente, haciendo la comunicación mucho más confiable.
+
 ## Bitácora de aplicación 
 
 ### Actividad 05
@@ -196,6 +198,7 @@ while True:
 El resto del código fue usado en una actividad anterior pero en esta no va a tener participacion pues solo necesitamos que el circulo se mueva a la derecha e izquierda
 
 ## Bitácora de reflexión
+
 
 
 
