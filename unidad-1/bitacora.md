@@ -24,7 +24,6 @@ Como profesional seria posible crear expewriencias envolventes e innovadoras a p
 
 #### ¿Por qué no funcionaba el programa con was_pressed() y por qué funciona con is_pressed()? Explica detalladamente.
 
-
 ## Bitácora de aplicación 
 
 ### Actividad 05
@@ -183,8 +182,21 @@ function connectBtnClick() {
   }
 }
 ```
+Por otra parte está el código del micro:bit, para empezar, al igual que en el anterior es necesario establecer la conexion con el micro:bit, inmediabtermente después se proyectará una mariposa. Después comienzan los condicionales, si se opirime el botón *A* se enviará información a la pantalla, en este caso haciendo caso a las indicaciones del código anterior el círculo se moverá a la izquierda y si se oprime el botón B también se enviará información de moverlo a la derecha
+
+```
+while True:
+    if button_a.is_pressed():
+        uart.write('A')
+        sleep(500)
+    if button_b.is_pressed():
+        uart.write('B')
+        sleep(500)
+```
+El resto del código fue usado en una actividad anterior pero en esta no va a tener participacion pues solo necesitamos que el circulo se mueva a la derecha e izquierda
 
 ## Bitácora de reflexión
+
 
 
 
