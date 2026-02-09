@@ -51,7 +51,7 @@ class semaforo:
         self.redX = _x
         self.redY = _y
 
-        self.event_queue = [] # donde se colocan los eventos que tiene que prosesar la maquina de estado
+        self.event_queue = [] # donde se colocan los eventos que tiene que procesar la maquina de estado
         self.timers = [] #lista de temporizadores
 
         self.myTimer = self.createTimer("Timeout", 2000)
@@ -149,3 +149,4 @@ while True:
 
 
 ## Bitácora de reflexión
+
