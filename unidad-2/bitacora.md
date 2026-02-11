@@ -322,6 +322,212 @@ Fin --> Config : si aprieto A
 
 ## Actividad 05
 
+#### Explica cómo resolviste el reto.
+Inicialmente me sentía perdida con el reto pues no entendía como enviar información desde el teclado a el programa p5.js, por lo que decidí usar chat gpt para que me apoyara en la realización del código, le hice varias preguntas y usé de referencia códigos de la unidad 1 para p5.js, intenté que la solución fuera similar a las que yo entendía para no confundirme, tuve una conversación corrigiendo errores y cambiando parte del código hasta que finalmente logré un código que enviaba la informaci´ón pero tenía ciertos errores, alli le pedí ayuda al profesor y logramos corregirlos
 
+#### Codigos 
+
+micro:bit
+``` py
+from microbit import *
+import utime
+import music
+uart.init(baudrate=115200)
+
+def make_fill_images(on='9', off='0'):
+    imgs = []
+    for n in range(26):
+        rows = []
+        k = 0
+        for y in range(5):
+            row = []
+            for x in range(5):
+                row.append(on if k < n else off)
+                k += 1
+            rows.append(''.join(row))
+        imgs.append(Image(':'.join(rows)))
+    return imgs
+
+FILL = make_fill_images()
+# Para mostrar usas display.show(FILL[n]) donde n será
+# un valor de 0 a 25
+
+class Timer:
+    def __init__(self, owner, event_to_post, duration):
+        self.owner = owner
+        self.event = event_to_post
+        self.duration = duration
+        self.start_time = 0
+        self.active = False
+
+    def start(self, new_duration=None):
+        if new_duration is not None:
+            self.duration = new_duration
+        self.start_time = utime.ticks_ms()
+        self.active = True
+
+    def stop(self):
+        self.active = False
+
+    def update(self):
+        if self.active:
+            if utime.ticks_diff(utime.ticks_ms(), self.start_time) >= self.duration:
+                self.active = False
+                self.owner.post_event(self.event)
+                
+class Task:
+    def __init__(self):
+        self.event_queue = []
+        self.timers = []
+        # Personalizas el nombre del evento y la duración
+        self.myTimer = self.createTimer("Timeout",1000)
+        self.counter = 20
+        self.estado_actual = None
+        self.transicion_a(self.estado_config)
+
+    def createTimer(self,event,duration):
+        t = Timer(self, event, duration)
+        self.timers.append(t)
+        return t
+
+    def post_event(self, ev):
+        self.event_queue.append(ev)
+
+    def update(self):
+        # 1. Actualizar todos los timers internos automáticamente
+        for t in self.timers:
+            t.update()
+
+        # 2. Procesar la cola de eventos resultante
+        while len(self.event_queue) > 0:
+            ev = self.event_queue.pop(0)
+            if self.estado_actual:
+                self.estado_actual(ev)
+
+    def transicion_a(self, nuevo_estado):
+        if self.estado_actual: self.estado_actual("EXIT")
+        self.estado_actual = nuevo_estado
+        self.estado_actual("ENTRY")
+
+    def estado_config(self, ev):
+        if ev == "ENTRY":
+            self.counter = 20
+            display.show(FILL[self.counter])
+            
+        if ev == "A":
+            if self.counter<25:
+                self.counter = self.counter + 1
+                display.show(FILL[self.counter])     
+        
+        if ev == "B":
+           if self.counter>15:
+                self.counter = self.counter - 1
+                display.show(FILL[self.counter])    
+           
+        if ev == "S":
+            self.transicion_a(self.estado_timerStart)
+
+    def estado_timerStart(self, ev):
+        if ev == "ENTRY":
+            self.myTimer.start(1000)
+        if ev == "Timeout":
+            if self.counter > 0: 
+                self.counter = self.counter - 1
+                display.show(FILL[self.counter])
+                if self.counter == 0:     
+                   self.transicion_a(self.estado_timerFinish)
+                else:
+                    self.myTimer.start(1000)
+                   
+    def estado_timerFinish(self, ev):
+        if ev == "ENTRY":
+            display.show(Image.SKULL)
+            music.play(music.NYAN)
+            
+        if ev == "A":
+           self.transicion_a(self.estado_config)        
+                
+
+task = Task()
+while True:
+    if uart.any():
+        data = uart.read(1)  # leer 1 byte
+        if data:
+            letra = chr(data[0])  # convertir a caracter
+            if letra in ["A", "B", "S"]:
+                task.post_event(letra)  # enviar al Task
+    
+    # Aquí generas los eventos de los botones y el gesto
+    if button_a.was_pressed():
+        task.post_event("A")
+    if button_b.was_pressed():
+        task.post_event("B")
+    if accelerometer.was_gesture("shake"):
+        task.post_event("S")
+        
+    task.update()
+    utime.sleep_ms(20)
+```
+
+p5.js
+
+``` js
+let port;
+let connectBtn;
+// declarar x como variable global para utilizarla en la posicion del circulo
+let x = 200;
+
+function setup() {
+  //crear canvas
+  createCanvas(400, 400);
+  background(220);
+  //crear boton para conectar al micro bit
+  port = createSerial();
+  connectBtn = createButton("Connect to micro:bit");
+  connectBtn.position(width / 3, 300);
+  connectBtn.mousePressed(connectBtnClick);
+
+  //crear la elipse y rellenarla de blanco
+  fill("white");
+  ellipse(width / 2, height / 2, 100, 100);
+}
+//crear las situcaiones para los botones a y b
+
+function draw() {
+  background(220);
+  // Dibujar círculo
+  fill("white");
+  ellipse(x, height / 2, 100, 100);
+
+  // Mostrar estado del botón
+  if (!port.opened()) {
+    connectBtn.html("Connect to micro:bit");
+  } else {
+    connectBtn.html("Disconnect");
+  }
+}
+
+function connectBtnClick() {
+  //conectar al microbit
+  if (!port.opened()) {
+    port.open("MicroPython", 115200);
+    //desconectar del microbit
+  } else {
+    port.close();
+  }
+}
+
+function keyPressed() {
+  if (port.opened()) {
+    if (key === "a") {
+      port.write("A"); // enviar evento A
+    } else if (key === "b") {
+      port.write("B"); // enviar evento B
+    } else if (key === "s" || key === "S") {
+      port.write("S"); // enviar evento S
+    }
+  }
+}
+```
 
 
