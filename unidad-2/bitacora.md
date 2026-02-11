@@ -292,7 +292,9 @@ while True:
 ```
 
 #### Construye la máquina de estados que modela el problema usando PlantUML.
+
 <img width="449" height="452" alt="image" src="https://github.com/user-attachments/assets/807776e3-cb57-4a45-b2d8-c522a83e665a" />
+
 ```
 @startuml
 
@@ -319,6 +321,7 @@ Fin --> Config : si aprieto A
 ## Bitácora de reflexión
 
 ## Actividad 05
+
 
 
 
