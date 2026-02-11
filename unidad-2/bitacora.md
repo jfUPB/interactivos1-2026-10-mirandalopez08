@@ -4,9 +4,21 @@
 
 ## Actividad 01
 
-¿Cuáles son los estados en el programa?
-¿Cuáles son los eventos en el programa?
-¿Cuáles son las acciones en el programa?
+#### ¿Cuáles son los estados en el programa?
+
+estado_waitTimeout (es el único estado del Pixel).
+
+#### ¿Cuáles son los eventos en el programa?
+- ENTRY
+- EXIT
+- Timeout (generado por el temporizador cuando se cumple el tiempo)
+
+#### ¿Cuáles son las acciones en el programa?
+- Encender el pixel (pixelState = 9 y display.set_pixel(...)).
+- Apagar el pixel (pixelState = 0 y display.set_pixel(...)).
+- Iniciar el temporizador (myTimer.start()).
+- Cambiar de estado (transicion_a(...)).
+- Publicar eventos (post_event(...)).
 
 ## Actividad 02
 
@@ -141,7 +153,11 @@ while True:
     semaforo1.update()
     utime.sleep_ms(20) #pueden ser 17 si lo estamos corriendo a 40 fps
 ```
+
+## Bitácora de aplicación 
+
 ## Actividad 04
+
 ```py
 from microbit import *
 import utime
@@ -276,12 +292,33 @@ while True:
 ```
 
 #### Construye la máquina de estados que modela el problema usando PlantUML.
+<img width="449" height="452" alt="image" src="https://github.com/user-attachments/assets/807776e3-cb57-4a45-b2d8-c522a83e665a" />
+```
+@startuml
 
-## Bitácora de aplicación 
+[*] --> Config
 
+Config : entry / 20 leds ON
+Config : A (si es menor a 25 aumento el contador)
+Config : B (si es mayor a 15 disminuyo el contador)
 
+Config --> Timer : si sacudo (S)
+
+Timer : entry / timer.start(1000)
+Timer : cuando pasa 1 segundo -1 lo muestro
+Timer : si todavía no llegó a 0 -> timer.start(1000)
+
+Timer --> Fin : cuando llega a 0
+
+Fin : entry /display.show(Image.SKULL) / music.play(music.NYAN)
+Fin --> Config : si aprieto A
+
+@enduml
+```
 
 ## Bitácora de reflexión
+
+## Actividad 05
 
 
 
