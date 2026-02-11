@@ -145,6 +145,7 @@ while True:
 ```py
 from microbit import *
 import utime
+import music
 
 def make_fill_images(on='9', off='0'):
     imgs = []
@@ -254,6 +255,7 @@ class Task:
     def estado_timerFinish(self, ev):
         if ev == "ENTRY":
             display.show(Image.SKULL)
+            music.play(music.NYAN)
             
         if ev == "A":
            self.transicion_a(self.estado_config)        
@@ -280,5 +282,6 @@ while True:
 
 
 ## Bitácora de reflexión
+
 
 
