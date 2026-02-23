@@ -313,6 +313,7 @@ while True:
 ```
 ## Bitácora de aplicación 
 ## Actividad 04
+Punto 3 de la actividad
 sketch.js
 ```js
 const TIMER_LIMITS = {
@@ -512,6 +513,26 @@ añadir
 <script src="https://unpkg.com/@gohai/p5.webserial@^1/libraries/p5.webserial.js"></script>
 ```
 
+micro:bit 
+```py
+from microbit import *
+
+uart.init(baudrate=115200)
+display.show(Image.HAPPY)
+
+while True:
+    if button_a.was_pressed():
+        uart.write('A')
+        sleep(500)
+    if button_b.was_pressed():
+        uart.write('B')
+        sleep(500)
+    if accelerometer.was_gesture('shake'):
+        uart.write('S')
+        sleep(500)
+```
+
 ## Bitácora de reflexión
+
 
 
