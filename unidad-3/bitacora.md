@@ -313,7 +313,7 @@ while True:
 ```
 ## Bitácora de aplicación 
 ## Actividad 04
-Punto 3 de la actividad
+
 sketch.js
 ```js
 const TIMER_LIMITS = {
@@ -348,6 +348,8 @@ class Temporizador extends FSMTask {
     this.configValue = defaultValue;
     this.totalSeconds = defaultValue;
     this.remainingSeconds = defaultValue;
+    this.password = [EVENTS.DEC, EVENTS.INC, EVENTS.DEC];
+    this.stopSequence = [];
 
     this.myTimer = this.addTimer(EVENTS.TICK, 1000);
     this.transitionTo(this.estado_config);
@@ -389,7 +391,9 @@ class Temporizador extends FSMTask {
     } else if (ev === EXIT) {
       this.myTimer.stop();
     }
-
+      else if (ev === EVENTS.START) { // O el evento que decidas para pausar
+      this.transitionTo(this.estado_paused);
+    }
   };
 
   estado_timeout = (ev) => {
@@ -399,6 +403,33 @@ class Temporizador extends FSMTask {
       this.transitionTo(this.estado_config);
     }
   }
+
+  estado_paused = (ev) => {
+    if (ev === ENTRY) {
+      this.myTimer.stop();
+    }
+    
+    // Si presionas Start (S), vuelve a armar el temporizador
+    if (ev === EVENTS.START) {
+      this.transitionTo(this.estado_armed);
+    }
+
+    // Lógica de la secuencia secreta (A o B)
+    if (ev === EVENTS.DEC || ev === EVENTS.INC) {
+      this.stopSequence.push(ev);
+
+      if (this.stopSequence.length === 3) {
+        // Comparamos la secuencia con el password ["A", "B", "A"]
+        if (this.stopSequence.join() === this.password.join()) {
+          this.stopSequence = []; // Limpiamos para la próxima vez
+          this.transitionTo(this.estado_config);
+        } else {
+          // Si falló, borramos lo que llevaba para que intente de nuevo
+          this.stopSequence = [];
+        }
+      }
+    }
+  };
 }
 
 let temporizador;
@@ -533,6 +564,7 @@ while True:
 ```
 
 ## Bitácora de reflexión
+
 
 
 
