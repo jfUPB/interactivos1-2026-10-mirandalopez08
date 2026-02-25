@@ -565,6 +565,37 @@ while True:
 
 ## Bitácora de reflexión
 
+## Actividad 05 
+Mi compañera Tatiana y yo realizamos el trabajo juntas, comenzamos probando como funcionaba enviando mensajes simples, pasamos texto y sonidos, luego programamos el recibir señales que funcionaran junto al temporizador y finalmente unimos los dos códigos para que sirviera desde ambos micro:bits
+
+```py
+from microbit import *
+import radio
+import music
+
+radio.config(group=250)
+uart.init(baudrate=115200)
+display.show(Image.HAPPY)
+radio.on()
+
+
+while True:
+    if button_a.was_pressed():
+        uart.write('A')
+    if button_b.was_pressed():
+        uart.write('B')
+    if accelerometer.was_gesture('shake'):
+        uart.write('S')
+
+    message = radio.receive()
+    if message:
+        if message == "A":
+            uart.write('A')
+        if message == "B":
+            uart.write('B')
+        if message == "S":
+            uart.write('S')
+```
 
 
 
