@@ -2,6 +2,8 @@
 
 ## Bitácora de proceso de aprendizaje
 
+## Bitácora de aplicación 
+
 Código MicrobitASCII2Adapter: 
 
 ```js
@@ -67,8 +69,46 @@ while True:
     sleep(100) # Envia datos a 10 Hz
 ```
 
-## Bitácora de aplicación 
+Código en el sketch.js drawRunning
+```js
+function drawRunning() {
+    let mb = painter.rxData;
 
+    if (!mb.ready) return;
 
+    // equivalente a mouseIsPressed
+    if (mb.btnA == 1) {
+
+        push();
+        translate(width / 2, height / 2);
+
+        // equivalente a mouseY
+        let circleResolution = int(map(mb.y + 100, 0, height, 2, 10));
+
+        // equivalente a mouseX
+        let radius = mb.x - width / 2;
+
+        let angle = TAU / circleResolution;
+
+        // equivalente a keyIsPressed
+        if (mb.btnB == 1) {
+            fill(34, 45, 122, 50);
+        } else {
+            noFill();
+        }
+        
+        beginShape();
+        for (let i = 0; i <= circleResolution; i++) {
+            let x = cos(angle * i) * radius;
+            let y = sin(angle * i) * radius;
+            vertex(x, y);
+        }
+        endShape();
+
+        pop();
+    }
+}
+```
 
 ## Bitácora de reflexión
+
