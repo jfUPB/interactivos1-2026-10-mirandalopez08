@@ -26,18 +26,22 @@ los datos enviados a la aplicacion de consexion serial serán:
 **01** = 1 = true
 **00** = 0 = false
 
-Los numeros enviados en binario tinene dos clasificaciones
-BIG ENDIAN: que es enviar primero el dato de mayor peso y luego el dato de menor peso, por ejemplo *02 37*
-LITTLE ENDIAN: enviar primero el dato de menor peso y luego el de mayor peso por ejemplii *37 02* 
+*Los numeros enviados en binario tinene dos clasificaciones*
+
+**BIG ENDIAN:** que es enviar primero el dato de mayor peso y luego el dato de menor peso, por ejemplo *02 37*
+
+**LITTLE ENDIAN:** enviar primero el dato de menor peso y luego el de mayor peso por ejemplii *37 02* 
 
 Es importante saber cuál es porque pueden ser dos números diferentes
 
 Un ejemplo 
 
 `05 F3 ¿Que numero te envié?`
-Tienes dos opciones
+
+Tienes dos opciones:
 
 `Opción 1:` si me enviaron Little endian: 62213 (armo el numero como F305)
+
 `Opción 2:` si me enviaron Big endian: 62213 (armo el numero como 05F3)
 
 ## Bitácora de aplicación 
