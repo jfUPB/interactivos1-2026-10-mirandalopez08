@@ -44,6 +44,11 @@ Tienes dos opciones:
 
 `Opción 2:` si me enviaron Big endian: 62213 (armo el numero como 05F3)
 
+## ¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto ASCII?
+Es mucho más fácil controlar los datos que entran, lo que significa más seguridad al momento de analizar los datos, por otra parte una de las desventajas más claras es que los datos son más dificiles de leer e interpretar por lo que es importante saber como manejarlos 
+
+Si xValue=500, yValue=524, aState=True, bState=False, ¿cómo se vería el paquete en hexadecimal? (Pista: convierte cada valor según su tipo y anota los bytes en orden.) Respuesta esperada: 01 F4 02 0C 01 00
+
 ## Bitácora de aplicación 
 
 
