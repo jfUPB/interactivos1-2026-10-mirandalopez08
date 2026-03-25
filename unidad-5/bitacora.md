@@ -219,7 +219,26 @@ class MicrobitBinaryAdapter extends BaseAdapter {
 
 module.exports = MicrobitBinaryAdapter;
 ```
+código del microbit 
 
+```py
+from microbit import *
+import struct
+
+uart.init(115200)
+display.set_pixel(0, 0, 9)
+
+while True:
+    xValue = accelerometer.get_x()
+    yValue = accelerometer.get_y()
+    aState = button_a.is_pressed()
+    bState = button_b.is_pressed()
+    data = struct.pack('>2h2B', xValue, yValue, int(aState), int(bState))
+    checksum = sum(data) % 256
+    packet = b'\xAA' + data + bytes([checksum])
+    uart.write(packet)
+    sleep(100)
+```
 
 
 ## Bitácora de reflexión
