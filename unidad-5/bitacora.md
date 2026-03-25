@@ -291,4 +291,4 @@ En cambio, elegiría un **protocolo ASCII** en etapas de desarrollo, prototipado
 
 
 **4. Actualiza el diagrama de flujo de datos de la Unidad 4 para reflejar el protocolo binario. ¿Qué componentes cambiaron? ¿Qué componentes permanecieron intactos?**
-
+[Ver diagrama](https://excalidraw.com/#json=qSKuMX8nLh8JUp3s88MAI,S2dItJzIkd44Uw5G6UOZZg)
