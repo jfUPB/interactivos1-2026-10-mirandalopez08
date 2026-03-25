@@ -265,16 +265,30 @@ while True:
 Mecanismo de delimitación/framing.
 Mecanismo de verificación de integridad (checksum).
 Complejidad de implementación del parser.
-Facilidad de depuración (¿cuál es más fácil de leer con un terminal serial?).
-¿Por qué la arquitectura desacoplada (patrón Adapter + Bridge + FSM) te permite añadir soporte para un protocolo completamente diferente sin modificar el frontend (sketch.js) ni el transporte (bridgeClient.js)?**
+Facilidad de depuración (¿cuál es más fácil de leer con un terminal serial?).**
+
+## ASCII
+*Tamaño*: el tamaño puede ser variable ya que no se determinan la cantidad de bytes usados
+*Framing*: Cada paquete comienza con un carácter identificador como $ y termina con un salto de línea (\n). El parser simplemente acumula caracteres del puerto serial hasta encontrar el fin de línea, momento en el cual considera que ha recibido un paquete completo y procede a procesarlo.
+*checksum*: chk = (abs(xValue) + abs(yValue) + aState + bState) % 1000 
+*parser*: los datos se reciben como texto. El programa solo necesita leer la línea completa hasta el carácter de fin de línea, separar los campos usando los delimitadores y convertir las cadenas a valores numéricos. Este proceso es directo y fácil de programar.
+*facilidad*: es más simple pues los datos vienen como texto y se leen literalmente
 
 ## Binario: 
-Tamaño: es posible regular el tamaño de el paquete de los bytes lo que permite optimizar el código, en este caso los bytes serán 8 y no podrán pasarse
-Framing: Es importante realizar raming porque el paquete de datos puede desconfigurarse si entra un byte de más pero esto ayuda a asegurar que los datos llegan en el orden correcto 
-checksum: checksum = sum(data) % 256 este numero es el rango, el checksum se realiza con este límite 
-parser: 
-facilidad: este es más complejo pues los paquetes de datos 
+*Tamaño*: es posible regular el tamaño de el paquete de los bytes lo que permite optimizar el código, en este caso los bytes serán 8 y no podrán pasarse
+*Framing*: Es importante realizar framing porque el paquete de datos puede desconfigurarse si entra un byte de más pero esto ayuda a asegurar que los datos llegan en el orden correcto, aqui se determinará con el inicio de aa y terminará cuando se cumplan los 8 bytes
+*checksum*: checksum = sum(data) % 256 este numero es el rango, el checksum se realiza con este límite 
+*parser*: Debe trabajar directamente con bytes, asegurarse de que se han recibido exactamente los bytes esperados, interpretar correctamente el orden y tamaño de cada campo dentro del paquete y verificar el checksum antes de considerar válidos los datos.
+*facilidad*: este es más complejo pues los paquetes de datos vienen decodificados y es necesario interpretarlos
 
-¿En qué situaciones del mundo real preferirías un protocolo binario sobre uno ASCII y viceversa? Justifica con ejemplos concretos.
+**2. ¿Por qué la arquitectura desacoplada (patrón Adapter + Bridge + FSM) te permite añadir soporte para un protocolo completamente diferente sin modificar el frontend (sketch.js) ni el transporte (bridgeClient.js)?**
+Ya que es posible adaptar diversos protocolos de lectura de datos a el mismo procedimiento por lo que no será necesario crear nuevos sketchs o bridgeclients porque estos solo recibirán la información y la procesarán sin importar como el dispositivo envía la información
 
-Actualiza el diagrama de flujo de datos de la Unidad 4 para reflejar el protocolo binario. ¿Qué componentes cambiaron? ¿Qué componentes permanecieron intactos?
+**3. ¿En qué situaciones del mundo real preferirías un protocolo binario sobre uno ASCII y viceversa? Justifica con ejemplos concretos.**
+Preferiría un **protocolo binario** en situaciones donde la eficiencia, la velocidad y la confiabilidad son críticas. Por ejemplo, en sistemas embebidos o de tiempo real como drones, robots o sensores industriales que envían datos a alta frecuencia, el uso de paquetes binarios reduce el tamaño de transmisión y permite procesar los datos más rápido. Esto disminuye la latencia y el uso del ancho de banda, lo cual es importante cuando el dispositivo tiene recursos limitados o cuando se transmiten muchos datos por segundo.
+
+En cambio, elegiría un **protocolo ASCII** en etapas de desarrollo, prototipado o en sistemas donde la facilidad de depuración y la legibilidad humana son más importantes que la eficiencia. Por ejemplo, al trabajar con un micro:bit en un entorno educativo o durante pruebas iniciales de un sistema serial, es mucho más sencillo leer directamente en un monitor serial mensajes como `X:120|Y:-45|A:1` que interpretar una secuencia de bytes en hexadecimal. También es útil en aplicaciones donde los datos se registran en archivos de texto o deben ser revisados manualmente por desarrolladores o técnicos.
+
+
+**4. Actualiza el diagrama de flujo de datos de la Unidad 4 para reflejar el protocolo binario. ¿Qué componentes cambiaron? ¿Qué componentes permanecieron intactos?**
+
