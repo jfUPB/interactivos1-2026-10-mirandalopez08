@@ -292,3 +292,24 @@ En cambio, elegiría un **protocolo ASCII** en etapas de desarrollo, prototipado
 
 **4. Actualiza el diagrama de flujo de datos de la Unidad 4 para reflejar el protocolo binario. ¿Qué componentes cambiaron? ¿Qué componentes permanecieron intactos?**
 [Ver diagrama](https://excalidraw.com/#json=qSKuMX8nLh8JUp3s88MAI,S2dItJzIkd44Uw5G6UOZZg)
+
+## pruebas extra
+
+para confirmar que el micro:bit todavía funciona con los códigos anteriores realicé pruebas:
+
+ASCII adapter 1: 
+
+<img width="903" height="488" alt="image" src="https://github.com/user-attachments/assets/982b2abd-6f02-4b80-91cf-0164b948b47e" />
+<img width="837" height="131" alt="image" src="https://github.com/user-attachments/assets/32c533e5-c148-4cd4-922b-085cbe81729e" />
+<img width="1902" height="910" alt="image" src="https://github.com/user-attachments/assets/8ae73b96-9007-4ae6-8541-26bf62219ca0" />
+
+
+
+
+ASCII adapter 2 / micro:bit 2
+
+<img width="850" height="616" alt="image" src="https://github.com/user-attachments/assets/5a6a74df-061b-4021-9ee3-2601640b4196" />
+<img width="817" height="206" alt="image" src="https://github.com/user-attachments/assets/28c695ec-d14c-4238-91b3-145a8ffb4cf8" />
+<img width="1883" height="895" alt="image" src="https://github.com/user-attachments/assets/b7f9fba5-71ff-44d4-8bcf-3fb54e58944b" />
+
+
