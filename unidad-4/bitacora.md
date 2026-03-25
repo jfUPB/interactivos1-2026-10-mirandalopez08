@@ -111,4 +111,5 @@ function drawRunning() {
 ```
 
 ## Bitácora de reflexión
+<img width="1907" height="1014" alt="unidad 4" src="https://github.com/user-attachments/assets/2fe8cd2b-a8cf-4639-8bae-9f37da68a7be" />
 
