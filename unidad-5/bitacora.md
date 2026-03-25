@@ -271,7 +271,9 @@ Facilidad de depuración (¿cuál es más fácil de leer con un terminal serial?
 ## Binario: 
 Tamaño: es posible regular el tamaño de el paquete de los bytes lo que permite optimizar el código, en este caso los bytes serán 8 y no podrán pasarse
 Framing: Es importante realizar raming porque el paquete de datos puede desconfigurarse si entra un byte de más pero esto ayuda a asegurar que los datos llegan en el orden correcto 
-checksum:
+checksum: checksum = sum(data) % 256 este numero es el rango, el checksum se realiza con este límite 
+parser: 
+facilidad: este es más complejo pues los paquetes de datos 
 
 ¿En qué situaciones del mundo real preferirías un protocolo binario sobre uno ASCII y viceversa? Justifica con ejemplos concretos.
 
