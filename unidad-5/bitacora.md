@@ -219,7 +219,23 @@ class MicrobitBinaryAdapter extends BaseAdapter {
 
 module.exports = MicrobitBinaryAdapter;
 ```
-código del microbit 
+
+**Añadir en el bridge server**
+```js
+const MicrobitBinaryAdapter = require("./adapters/MicrobitBinaryAdapter");
+```
+
+```js
+ if (DEVICE === "microbit-bin") {
+    const path = SERIAL_PATH ?? await findMicrobitPort();
+    if (!path) {
+      log.error("micro:bit not found. Use --serialPort to specify manually.");
+      process.exit(1);
+    }
+    return new MicrobitBinaryAdapter({ path, baud: BAUD });
+  }
+```
+**código del microbit**
 
 ```py
 from microbit import *
@@ -242,3 +258,21 @@ while True:
 
 
 ## Bitácora de reflexión
+
+**1. Realiza una tabla comparativa entre el adapter ASCII que creaste en la Unidad 4 (MicrobitV2Adapter.js) y el adapter binario de esta unidad (MicrobitBinaryAdapter.js). Compara al menos:**
+
+**Tamaño de cada paquete en bytes.
+Mecanismo de delimitación/framing.
+Mecanismo de verificación de integridad (checksum).
+Complejidad de implementación del parser.
+Facilidad de depuración (¿cuál es más fácil de leer con un terminal serial?).
+¿Por qué la arquitectura desacoplada (patrón Adapter + Bridge + FSM) te permite añadir soporte para un protocolo completamente diferente sin modificar el frontend (sketch.js) ni el transporte (bridgeClient.js)?**
+
+## Binario: 
+Tamaño: es posible regular el tamaño de el paquete de los bytes lo que permite optimizar el código, en este caso los bytes serán 8 y no podrán pasarse
+Framing: Es importante realizar raming porque el paquete de datos puede desconfigurarse si entra un byte de más pero esto ayuda a asegurar que los datos llegan en el orden correcto 
+checksum:
+
+¿En qué situaciones del mundo real preferirías un protocolo binario sobre uno ASCII y viceversa? Justifica con ejemplos concretos.
+
+Actualiza el diagrama de flujo de datos de la Unidad 4 para reflejar el protocolo binario. ¿Qué componentes cambiaron? ¿Qué componentes permanecieron intactos?
