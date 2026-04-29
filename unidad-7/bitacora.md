@@ -22,6 +22,9 @@ FONDO - RASTROS DE COLOR
 KNOB - VELOCIDAD
 <img width="956" height="1017" alt="image" src="https://github.com/user-attachments/assets/1824374b-de14-476b-86b5-1a34b0e54af4" />
 
+Los mensajes se reciben de esta forma: 
+<img width="919" height="421" alt="image" src="https://github.com/user-attachments/assets/a465cf3e-225c-4d48-b9df-e53ae5c5fcb4" />
+
 
 el `servidor` se abre con:  `node bridgeServer.js --device strudel --wsPort 8081 --strudelPort 8080 --oscPort 9000`
 
@@ -739,3 +742,50 @@ function windowResized() {
 }
 ```
 ## Bitácora de reflexión
+**1. Realiza un diagrama detallado del flujo de datos completo de tu sistema. Debe incluir al menos:**
+
+*Strudel;
+Open Stage Control;
+Adapter de Strudel;
+Adapter de Open Stage Control;
+bridgeServer.js;
+bridgeClient.js o cliente equivalente;
+Cola de eventos;
+Estado persistente de controles;
+Render visual.*
+
+<img width="795" height="667" alt="image" src="https://github.com/user-attachments/assets/57e63e43-9cd3-40ef-8f0e-daacbc16e095" />
+
+
+**2.Compara en una tabla las fuentes de datos que has trabajado en las unidades 4, 5, 6 y 7. Compara al menos:**
+
+*Fuente de datos;
+Formato del mensaje;
+Tipo de dato que produce;
+Problema técnico principal;
+Lugar donde ocurre la traducción del dato;
+Papel del tiempo;
+Relación con el estado del sistema.*
+
+| Unidad | Fuente de datos    | Formato                | Tipo de dato           | Problema técnico                | Traducción      | Tiempo               | Estado         |
+| ------ | ------------------ | ---------------------- | ---------------------- | ------------------------------- | --------------- | -------------------- | -------------- |
+| 4      | micro:bit         | ASCII                  | Botones x, y, ac       | Sicronización de datos          | SimAdapter      | Tiempo real          | Activo cuando llegan mensajes |
+| 5      | micro:bit         | binario                | Botones x, y, ac       | Parseo de los datos             | MicrobitAdapter | Tiempo real          | Activo cuando llegan mensajes        |
+| 6      | Strudel           | Sonidos strudel        | Eventos musicales      | Sincronización temporal precisa | StrudelAdapter  | Timestamp            | Activo cuando hay música en strudel |
+| 7      | Open Stage Control | OSC                   | Controles continuos    | Funcionamiento de dos servidores| OSC Adapter     | No depende de tiempo | Persistente    |
+
+
+**3.Explica por qué Open Stage Control no debe tratarse igual que Strudel dentro de la arquitectura.**
+
+Debido a que el servidor de OSC debe mantenerse abiert constantemente y el de strudel aunque este abierto solo funciona cuando llegan datos si ambos funcionaran de la misma manera se producirían leves restrasos en la ejecución del sistema pues primero tendria que entrar el código a leer los datos de strudel y luego volver al mismo lugar por los datos de osc y no permitiría la sincronización de ambos servidores
+
+**4.Justifica los tres controles que elegiste:**
+
+*Qué parámetro modifican;
+Por qué ese parámetro es relevante;
+Cómo se refleja en el comportamiento visual.
+Si tuvieras que integrar una tercera fuente de control en el futuro, ¿Qué partes de tu arquitectura actual conservarías y cuáles extenderías?*
+
+modifiqué 3 parámetros, color que impacta en la identidad visual de el proyecto y lo hace más o menos llamativo dependiendo del color escogido, el tamaño que hace que las figuras destaquen más o menos y el fondo que deja un leve rastro de color dependiendo del color que fue escogido en el primer slider, por ultimo añadí uno de tiempo pero no está sincronizado con la música
+
+Conservaría la mayoría de la arquitectura y adaptaría el bridge server a un nuevo dispositivo al igual que el sketch, permitiendo que pueda conectarse otro dispositivo
