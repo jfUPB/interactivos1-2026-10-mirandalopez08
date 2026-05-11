@@ -336,5 +336,51 @@ function keyReleased() {
 ```
 Para el micro.bit el código depende de el tipo de adaptador que se va a usar: 
 
-si es ascii adapter: 
+si es ascii adapter (microbit): 
+
+```py
+
+```
+
+Si es ascii adapter 2 (microbit2):
+```py
+from microbit import *
+
+uart.init(115200)
+display.set_pixel(0,0,9)
+
+while True:
+    t = running_time()
+    xValue = accelerometer.get_x()
+    yValue = accelerometer.get_y()
+    aState = 1 if button_a.is_pressed() else 0
+    bState = 1 if button_b.is_pressed() else 0
+    chk = (abs(xValue) + abs(yValue) + aState + bState) % 1000
+
+    data = "$T:{}|X:{}|Y:{}|A:{}|B:{}|CHK:{}\n".format(
+        t, xValue, yValue, aState, bState, chk
+    )
+    uart.write(data)
+    sleep(100) # Envia datos a 10 Hz
+```
+
+Si es binary adapter: 
+```py
+from microbit import *
+import struct
+
+uart.init(115200)
+display.set_pixel(0, 0, 9)
+
+while True:
+    xValue = accelerometer.get_x()
+    yValue = accelerometer.get_y()
+    aState = button_a.is_pressed()
+    bState = button_b.is_pressed()
+    data = struct.pack('>2h2B', xValue, yValue, int(aState), int(bState))
+    checksum = sum(data) % 256
+    packet = b'\xAA' + data + bytes([checksum])
+    uart.write(packet)
+    sleep(100)
+```
 ## Bitácora de reflexión
