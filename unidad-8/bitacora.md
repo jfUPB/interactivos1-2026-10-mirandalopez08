@@ -339,7 +339,19 @@ Para el micro.bit el código depende de el tipo de adaptador que se va a usar:
 si es ascii adapter (microbit): 
 
 ```py
+from microbit import *
 
+uart.init(115200)
+display.set_pixel(0,0,9)
+
+while True:
+    xValue = accelerometer.get_x()
+    yValue = accelerometer.get_y()
+    aState = button_a.is_pressed()
+    bState = button_b.is_pressed()
+    data = "{},{},{},{}\n".format(xValue, yValue, aState,bState)
+    uart.write(data)
+    sleep(100) # Envia datos a 10 Hz
 ```
 
 Si es ascii adapter 2 (microbit2):
