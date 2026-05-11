@@ -90,12 +90,27 @@ La separación entre **transporte** y **scheduling** fue la decisión más impor
 
 ### Comando de ejecución
 
+Para el micro bit ascii adapter:
 ```bash
 node bridgeServer.js --device microbit --wsPort 8081 --strudelPort 8080 --oscPort 9000
 ```
 
+para el microbit ascii adapter 2: 
+```bash
+node bridgeServer.js --device microbit2 --wsPort 8081 --strudelPort 8080 --oscPort 9000
+```
 
-Los cambios ralizados en el código fueron muy pequeños puesto que en unidades anteriores habiamos trabajado teniendo en cuenta la integración del micro bit
+para el microbit binary adapter: 
+```bash
+node bridgeServer.js --device microbit-bin --wsPort 8081 --strudelPort 8080 --oscPort 9000
+```
+
+para el simulador: 
+```bash
+node bridgeServer.js --device sim --wsPort 8081 --strudelPort 8080 --oscPort 9000
+```
+
+Los cambios realizados en el código fueron muy pequeños puesto que en unidades anteriores habiamos trabajado teniendo en cuenta la integración del micro bit
 
 En la funcion `createAdapter()` se eliminó la opción de strudel: 
 
@@ -291,6 +306,32 @@ function dibujarDefault(anim, p, c) {
     rect(0, 0, size, size);
     line(-size, 0, size, 0);
     line(0, -size, 0, size);
+}
+```
+
+Además para probarlo temporalmente se agregaron otras funciones que no tienen influencia en el código: 
+
+```cs
+function keyPressed() {
+    if (key === 'a' || key === 'A') {
+        painter.postEvent({
+            type: EVENTS.DATA,
+            payload: { type: "microbit", x: 0, y: 0, btnA: true, btnB: false }
+        });
+    }
+    if (key === 'b' || key === 'B') {
+        painter.postEvent({
+            type: EVENTS.DATA,
+            payload: { type: "microbit", x: 0, y: 0, btnA: false, btnB: true }
+        });
+    }
+}
+
+function keyReleased() {
+    painter.postEvent({
+        type: EVENTS.DATA,
+        payload: { type: "microbit", x: 0, y: 0, btnA: false, btnB: false }
+    });
 }
 ```
 
