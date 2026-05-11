@@ -334,5 +334,7 @@ function keyReleased() {
     });
 }
 ```
+Para el micro.bit el código depende de el tipo de adaptador que se va a usar: 
 
+si es ascii adapter: 
 ## Bitácora de reflexión
